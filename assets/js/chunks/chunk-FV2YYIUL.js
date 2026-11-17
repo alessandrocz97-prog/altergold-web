@@ -1,0 +1,1 @@
+var e={phone:"961 12 65 27",tel:"+34961126527",whatsapp:"34744628446",email:"info@altergold.es"},o=(t="")=>`https://wa.me/${e.whatsapp}${t?"?text="+encodeURIComponent(t):""}`,a=()=>globalThis.__AG_TEST__?0:700;export{e as a,o as b,a as c};
