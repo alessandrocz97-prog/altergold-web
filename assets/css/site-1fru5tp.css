@@ -697,8 +697,8 @@ h2 em,h3 em,h4 em{font-style:normal}
    página se ve completa y quieta. */
 
 /* H.1 Revelados al entrar en pantalla (los dispara ag-motion.js con .is-in) */
-html.ag-anim :is(main,.site-footer) :is(.eyebrow:not(.kicker),.section-heading>p,.section-heading>.text-link,.section-heading>.home-stores-actions,.home-shop-intro,.hero-tasks a,.product-card,.how,.trust-facts li,.trust-links,.service-row>li,.store-panel,.facts-grid li,.faq-layout .accordion,.split-copy>p,.split-copy .steps,.split-copy .actions,.process-item,.service-link,.pillar,.trust-item,.calc-card,.calc-aside,.calc-lead,.calc-ref,.price-intro>p,.price-board,.page-intro>p,.home-pieces-more,.cta-band p,.cta-band .actions,.footer-contact-intro p,.footer-contact-ways>*,.plp-hero-line,.statement blockquote,.sp-body,.pieces-all):not(.hero *):not(.calculator *):not(.is-in){opacity:0}
-html.ag-anim :is(main,.site-footer) :is(.eyebrow:not(.kicker),.section-heading>p,.section-heading>.text-link,.section-heading>.home-stores-actions,.home-shop-intro,.hero-tasks a,.product-card,.how,.trust-facts li,.trust-links,.service-row>li,.store-panel,.facts-grid li,.faq-layout .accordion,.split-copy>p,.split-copy .steps,.split-copy .actions,.process-item,.service-link,.pillar,.trust-item,.calc-card,.calc-aside,.calc-lead,.calc-ref,.price-intro>p,.price-board,.page-intro>p,.home-pieces-more,.cta-band p,.cta-band .actions,.footer-contact-intro p,.footer-contact-ways>*,.plp-hero-line,.statement blockquote,.sp-body,.pieces-all):not(.hero *):not(.calculator *).is-in{animation:ag-rise .9s var(--e-out) backwards;animation-delay:var(--d,0ms)}
+html.ag-anim :is(main,.site-footer) :is(.eyebrow:not(.kicker),.section-heading>p,.section-heading>.text-link,.section-heading>.home-stores-actions,.home-shop-intro,.hero-tasks a,.product-card,.trust-groups>section,.trust-proofs,.service-row>li,.store-panel,.facts-grid li,.faq-layout .accordion,.split-copy>p,.split-copy .steps,.split-copy .actions,.process-item,.service-link,.pillar,.trust-item,.page-intro>p,.home-pieces-more,.cta-band p,.cta-band .actions,.footer-contact-intro p,.footer-contact-ways>*,.plp-hero-line,.statement blockquote,.sp-body,.pieces-all):not(.hero *):not(.calculator *):not(.is-in){opacity:0}
+html.ag-anim :is(main,.site-footer) :is(.eyebrow:not(.kicker),.section-heading>p,.section-heading>.text-link,.section-heading>.home-stores-actions,.home-shop-intro,.hero-tasks a,.product-card,.trust-groups>section,.trust-proofs,.service-row>li,.store-panel,.facts-grid li,.faq-layout .accordion,.split-copy>p,.split-copy .steps,.split-copy .actions,.process-item,.service-link,.pillar,.trust-item,.page-intro>p,.home-pieces-more,.cta-band p,.cta-band .actions,.footer-contact-intro p,.footer-contact-ways>*,.plp-hero-line,.statement blockquote,.sp-body,.pieces-all):not(.hero *):not(.calculator *).is-in{animation:ag-rise .9s var(--e-out) backwards;animation-delay:var(--d,0ms)}
 /* Antes de entrar se ocultan con opacidad y no con recorte: un elemento recortado
    del todo no cuenta como visible para el observador y nunca llegaría a revelarse. */
 html.ag-anim main :is(.split-media,.trust-proof-media,.category-card,.store-visual,.sp-figure):not(.is-in){opacity:0}
@@ -1565,4 +1565,209 @@ body:has(#site-header.is-overlay:not(.is-scrolled)) .hero-tasks{opacity:0;transf
 }
 @media (max-width:479px){
   .vault-perks>div{grid-template-columns:6.5rem minmax(0,1fr)}
+}
+
+
+/* ---------------------------------------------------------------------------
+   ALTER GOLD · v7 — pulido
+   Va después de v6.css y no cambia la estructura de la página: afina las seis
+   zonas de la v6 con una capa común y un ajuste de fondo en cada una.
+     0. Escala    títulos de sección, de módulo y de elemento a un solo tamaño.
+     1. Común     texto sin viudas, cifras tabulares, rótulos en minúscula,
+                  zonas de pulsación, estados y tiempos de movimiento.
+     2. Menú      altura acotada, filete en las fotos, pie con jerarquía.
+     3. Calculadora   la ficha destaca el precio de compra de la pureza elegida.
+     4. Tablas    unidad en la cabecera, segundo tramo en segundo plano.
+     5. Confianza numerales, tres grupos y bloque de prueba.
+     6. Vender/empeñar  los mismos tres atributos; fotos más bajas.
+     7. Cajas     ficha con datos concretos.
+   --------------------------------------------------------------------------- */
+
+/* 0. Escala -------------------------------------------------------------------- */
+:root{
+  --t-h2:clamp(1.9375rem,3vw,2.875rem);   /* título de sección: el mismo que el resto de la portada */
+  --t-h3:clamp(1.75rem,2.4vw,2.25rem);    /* título de módulo: Vender, Empeñar, Cajas de seguridad */
+  --t-card:1.625rem;                      /* título de tarjeta pequeña */
+  --t-item:1.375rem;                      /* título de elemento: franjas, grupos, tablas, menú */
+}
+.price-intro h2,#rate-table .section-heading h2,.trust-proof-copy>h2{font-size:var(--t-h2);line-height:1.05}
+.sp-body h3,.service-row .service-row-vault h3{font-size:var(--t-h3);line-height:1.08}
+.service-row h3{font-size:var(--t-card)}
+.how-title,.calc-aside h3,.how .steps-row h3,.trust-groups h3{font-size:var(--t-item)}
+
+/* 1. Común --------------------------------------------------------------------- */
+/* Texto: ni viudas ni cifras partidas */
+:where(.calc-band,.price-panel,#rate-table,.trust-process,.sell-pawn,.more-services,.mm) :is(p,li,dd){text-wrap:pretty}
+/* Los textos de dos o tres líneas se reparten: ninguna última línea de dos palabras */
+.calc-lead,.calc-card p,.price-lead,.how .steps-row p,.trust-groups li,.trust-proofs span,.sp-body>p,.sp-specs dd,.vault-perks dd,.service-row-body>p,.mm-text{text-wrap:balance}
+:is(.calc-ref,.price-board,#rate-table,.sp-specs,.vault-perks,.trust-groups,.calc-aside){font-variant-numeric:lining-nums tabular-nums}
+
+/* Rótulos de ficha: minúscula y gris, el dato manda */
+.sp-specs dt,.vault-perks dt{font:500 0.8125rem/1.4 var(--body);letter-spacing:0;text-transform:none}
+.sp-specs dd,.vault-perks dd{font:500 1rem/1.35 var(--body)}
+.calc-ref-k,.strip-k{font-size:0.75rem;letter-spacing:.11em}
+
+/* Zonas de pulsación dentro de la calculadora: más grandes sin cambiar su aspecto */
+/* Por debajo de 900 px estos enlaces ya miden 48 px de alto */
+@media (min-width:900px){
+  .calculator--card .field-row .text-link{position:relative}
+  .calculator--card .field-row .text-link::before{content:'';position:absolute;inset:-1.125rem -0.5rem -0.5rem}
+}
+.calculator--card .segmented button::before{content:'';position:absolute;inset:0 -0.5rem}
+
+/* Movimiento: corto. Nada pasa de 300 ms en lo que se pulsa. */
+@media (prefers-reduced-motion:no-preference){
+  .menu-dialog[open] .mm-grid .mm-item,.menu-dialog[open] :is(.mm-links li,.mm-contact a){animation-duration:.26s}
+  .menu-dialog[open] .mm-grid li:nth-child(1) .mm-item{animation-delay:0s}
+  .menu-dialog[open] .mm-grid li:nth-child(2) .mm-item{animation-delay:.025s}
+  .menu-dialog[open] .mm-grid li:nth-child(3) .mm-item{animation-delay:.05s}
+  .menu-dialog[open] .mm-grid li:nth-child(4) .mm-item{animation-delay:.075s}
+  .menu-dialog[open] .mm-grid li:nth-child(5) .mm-item{animation-delay:.1s}
+  .menu-dialog[open] .mm-grid li:nth-child(6) .mm-item{animation-delay:.125s}
+  .menu-dialog[open] .mm-grid li:nth-child(7) .mm-item{animation-delay:.15s}
+  .menu-dialog[open] .mm-grid li:nth-child(8) .mm-item{animation-delay:.175s}
+  .menu-dialog[open] :is(.mm-links li,.mm-contact a){animation-delay:.15s}
+  .price-panel:not([hidden])>.container{animation-duration:.28s}
+}
+@media (prefers-reduced-motion:no-preference) and (min-width:64em){
+  .dialog.drawer.left.menu-dialog[open]{animation:mm-down .26s var(--e-out)}
+}
+.sp-media,.service-row>li>.service-row-media,.mm-thumb{transition-duration:.6s}
+
+/* 2. Menú ---------------------------------------------------------------------- */
+.mm-frame{position:relative}
+.mm-frame::after{content:'';position:absolute;inset:0;border-radius:inherit;box-shadow:inset 0 0 0 1px rgb(var(--sh)/.1);pointer-events:none}
+.mm .mm-item:focus-visible{outline:2px solid var(--ink);outline-offset:0.25rem}
+.mm-frame{transition:box-shadow .3s var(--e-out),transform .16s var(--e-out)}
+.mm .mm-item:active .mm-frame{transform:scale(.985)}
+/* Pie: una acción principal, cuatro enlaces y el contacto */
+.mm-links{align-items:center}
+.mm-links .mm-cita{margin-right:0.5rem}
+.mm-links .mm-cita a{min-height:3rem;padding:0 1.125rem;border-radius:var(--r-ctl);background:linear-gradient(180deg,#303236 0%,#17181B 100%);color:var(--on-ink);font-weight:600;box-shadow:inset 0 1px 0 rgba(255,255,255,.12),0 1px 2px rgb(var(--sh)/.25);text-decoration:none;transition:transform .16s var(--e-out),background-color .2s ease}
+.mm-links .mm-cita a:hover{text-decoration:none;background:linear-gradient(180deg,#3B3D42 0%,#1E2023 100%)}
+.mm-links .mm-cita a:active{transform:scale(.97)}
+.mm-links .mm-cita a:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+@media (max-width:63.99em){
+  .mm-links .mm-cita{flex:1 0 100%;margin:0 0 0.5rem}
+  .mm-links .mm-cita a{width:100%;justify-content:center}
+}
+@media (min-width:64em){
+  /* La altura de las fotos depende del alto de la ventana: el menú no pasa de tres cuartos de pantalla. */
+  .mm-grid{gap:1.5rem;padding-block:1.5rem 1.75rem}
+  .mm-frame{aspect-ratio:auto;height:clamp(6.5rem,15vh,11rem)}
+  .mm .mm-item{gap:0.75rem}
+  .mm .mm-title{font-size:var(--t-item)}
+  .mm .mm-text{margin-top:0.1875rem}
+  .mm-links .mm-narrow{display:none}
+}
+
+/* 3. Calculadora: la ficha destaca lo que se paga -------------------------------- */
+@media (min-width:1100px){
+  /* La ficha baja hasta donde termina la calculadora, con un tope: al pasar a
+     «Empeñar» la calculadora crece y la ficha no debe saltar media pantalla. */
+  .calc-band-inner>.calc-intro{display:flex;flex-direction:column;align-self:stretch}
+  .calc-intro::before{content:'';order:1;flex:1 1 0;min-height:0;max-height:4.75rem}
+  .calc-intro>.calc-ref{order:2}
+}
+.calc-ref .quote--panel{padding-block:0.5625rem}
+.calc-ref .quote--panel .quote-label{font:400 0.9375rem/1.3 var(--body);color:var(--subdued)}
+.calc-ref .quote--panel .quote-purity{color:inherit}
+.calc-ref .quote--panel strong{font:500 1rem/1 var(--body);letter-spacing:-.01em}
+.calc-ref .quote-row:last-of-type{border-bottom:0}
+.calc-ref-buy{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:0.25rem 1rem;margin:0;padding:0.75rem 1.25rem 0.8125rem;border-top:1px solid var(--hairline);background:linear-gradient(180deg,#F6F5F2 0%,#EEEDE8 100%);box-shadow:inset 3px 0 0 var(--ink)}
+.calc-ref-buy-k{font:600 1rem/1.3 var(--body);color:var(--ink)}
+.calc-ref-buy strong{font:600 var(--t-item)/1 var(--body);letter-spacing:-.025em;white-space:nowrap}
+.calc-ref-more{min-height:2.75rem;border-top:1px solid var(--hairline)}
+.calc-ref-more:active{background:linear-gradient(180deg,#EEEDE8 0%,#E2E1DB 100%)}
+
+/* 4. Tablas -------------------------------------------------------------------- */
+/* La primera columna pide su parte y cede si no hay sitio: las cabeceras no se parten nunca */
+:where(.price-board,#rate-table) .price-table th:first-child{width:44%}
+:where(.price-board,#rate-table) .price-table th{white-space:nowrap}
+:where(.price-board,#rate-table) .reference-table th{padding-block:0.5625rem 0.625rem;font:500 0.8125rem/1.3 var(--body);letter-spacing:0;text-transform:none;color:var(--subdued);vertical-align:bottom}
+:where(.price-board,#rate-table) .reference-table th{padding-inline:0}
+:where(.price-board,#rate-table) .reference-table th:not(:first-child){padding-left:0.5rem}
+.th-unit{display:block;margin-top:0.0625rem;font-weight:400;font-size:0.75rem;color:var(--grey)}
+:where(.price-board,#rate-table) .price-table td{font-weight:500}
+/* El tramo de más de 200 g es el menos frecuente: en segundo plano */
+:where(.price-board,#rate-table) .price-table td:last-child{font-weight:400;color:var(--grey)}
+:where(.price-board,#rate-table) .price-table tr.is-current td:last-child{color:var(--on-ink-muted)}
+.row-note{display:none;margin-left:0.625rem;font:400 0.75rem/1 var(--body);letter-spacing:0;color:var(--on-ink-muted);white-space:nowrap}
+/* La nota solo aparece si cabe en la misma línea que la pureza: si partiera la
+   fila, las dos tablas dejarían de casar. Depende del ancho del tablero, no de la pantalla. */
+:where(.price-board,#rate-table) .price-tables{container-type:inline-size}
+@container (min-width:34.5rem){
+  .row-note{display:inline}
+}
+@media (min-width:768px){
+  @container (max-width:50.99rem){
+    .row-note{display:none}
+  }
+}
+/* La fila entera ya es pulsable: responde al pulsar y lleva el foco en la fila, no en la cifra */
+:where(.price-board,#rate-table) .price-table tbody tr{transition:background-color .15s ease}
+:where(.price-board,#rate-table) .price-table tbody tr:active{background:rgb(var(--sh)/.09)}
+:where(.price-board,#rate-table) .price-table tbody tr.is-current:active{background:var(--ink-3)}
+:where(.price-board,#rate-table) .price-table tbody tr:has(button:focus-visible){outline:2px solid var(--ink);outline-offset:-2px}
+:where(.price-board,#rate-table) .price-table tbody tr.is-current:has(button:focus-visible){outline-color:var(--gold)}
+:where(.price-board,#rate-table) .price-table tbody tr:has(button:focus-visible) button{outline:0}
+.price-intro .price-go{margin-top:0.5rem}
+
+
+/* 5. Confianza ------------------------------------------------------------------- */
+/* Pasos: es una secuencia de verdad, así que lleva numeral y no rótulo */
+.how .steps-row li{display:grid;grid-template-columns:auto minmax(0,1fr);align-items:baseline;column-gap:0.875rem}
+.step-n{font:500 var(--t-item)/1.2 var(--body);letter-spacing:-.02em;font-variant-numeric:lining-nums tabular-nums;color:var(--grey)}
+@media (min-width:900px){
+  .how-title{align-items:flex-start}
+}
+.how .steps-row h3{margin-bottom:0.1875rem}
+/* Garantías en tres grupos */
+.trust-groups{display:grid;gap:1.75rem clamp(1.5rem,2.6vw,2.5rem);margin:0 0 clamp(1.75rem,2.6vw,2.5rem)}
+.trust-groups h3{margin:0 0 0.75rem;font-weight:600;line-height:1.2;letter-spacing:-.012em}
+.trust-groups ul{display:grid;margin:0;padding:0;list-style:none;border-top:1px solid var(--ink)}
+.trust-groups li{padding:0.5625rem 0 0.625rem;border-bottom:1px solid var(--hairline);font-size:0.9375rem;line-height:1.4;color:var(--subdued)}
+@media (min-width:600px){
+  .trust-groups{grid-template-columns:repeat(3,minmax(0,1fr))}
+}
+/* Bloque de prueba: lo que se puede comprobar fuera de esta página */
+.trust-proofs{grid-template-columns:minmax(0,1fr)}
+.trust-proofs li{min-width:0}
+.trust-proofs li+li{box-shadow:inset 0 1px 0 var(--hairline)}
+.trust-proofs a{position:relative;display:grid;align-content:start;gap:0.1875rem;height:100%;padding:0.9375rem 2.75rem 1rem 1.25rem;color:var(--ink);text-decoration:none;transition:background-color .2s ease}
+.trust-proofs strong{font:600 1rem/1.3 var(--body)}
+.trust-proofs a>span:not(.visually-hidden){font-size:0.8125rem;line-height:1.4;color:var(--subdued)}
+.trust-proofs a::after{content:'';position:absolute;top:1.125rem;right:1.125rem;width:1rem;height:1rem;background:var(--grey);-webkit-mask:var(--arrow) center / contain no-repeat;mask:var(--arrow) center / contain no-repeat;transition:transform .25s var(--e-out),background-color .2s ease}
+.trust-proofs a[target=_blank]::after{transform:rotate(-45deg)}
+.trust-proofs a:active{background:var(--stone)}
+.trust-proofs a:focus-visible{outline:2px solid var(--ink);outline-offset:-3px}
+@media (hover:hover) and (pointer:fine){
+  .trust-proofs a:hover{background:linear-gradient(180deg,#F8F8F5 0%,#F0EFEB 100%)}
+  .trust-proofs a:hover::after{background:var(--ink);transform:translateX(0.25rem)}
+  .trust-proofs a[target=_blank]:hover::after{transform:translate(0.1875rem,-0.1875rem) rotate(-45deg)}
+}
+@media (min-width:600px){
+  .trust-proofs{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .trust-proofs li+li{box-shadow:inset 1px 0 0 var(--hairline)}
+}
+
+/* 6. Vender o empeñar ------------------------------------------------------------- */
+.sp-figure{aspect-ratio:16 / 9}
+.sp-body{margin-top:-3.25rem}
+.sp-specs dt{color:var(--on-ink-muted)}
+.sp-specs>div{grid-template-columns:5.25rem minmax(0,1fr)}
+@media (min-width:1400px){
+  .sp-specs>div{padding-right:1.25rem}
+  .sp-specs dd{margin-top:0.25rem}
+}
+@media (max-width:767px){
+  .sp-body{margin-top:-2.5rem}
+}
+
+/* 7. Cajas de seguridad ------------------------------------------------------------ */
+.vault-perks dt{color:var(--grey)}
+.vault-perks>div{grid-template-columns:6.75rem minmax(0,1fr);padding:0.75rem 0 0.8125rem}
+.service-row-vault .service-row-body>p:not(.service-row-links){font-size:1.0625rem}
+@media (max-width:479px){
+  .vault-perks>div{grid-template-columns:6rem minmax(0,1fr)}
 }

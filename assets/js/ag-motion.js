@@ -7,13 +7,13 @@
      2. Revela bloques e imágenes cuando entran en pantalla, escalonados.
      3. Coordina la entrada de la portada y de las cabeceras de página.
      4. Paralaje suave de la foto de cabecera.
-   Las listas de selectores (.eyebrow:not(.kicker),.section-heading>p,.section-heading>.text-link,.section-heading>.home-stores-actions,.home-shop-intro,.hero-tasks a,.product-card,.how,.trust-facts li,.trust-links,.service-row>li,.store-panel,.facts-grid li,.faq-layout .accordion,.split-copy>p,.split-copy .steps,.split-copy .actions,.process-item,.service-link,.pillar,.trust-item,.calc-card,.calc-aside,.calc-lead,.calc-ref,.price-intro>p,.price-board,.page-intro>p,.home-pieces-more,.cta-band p,.cta-band .actions,.footer-contact-intro p,.footer-contact-ways>*,.plp-hero-line,.statement blockquote,.sp-body,.pieces-all, .split-media,.trust-proof-media,.category-card,.store-visual,.sp-figure) las rellena apply.py desde
+   Las listas de selectores (.eyebrow:not(.kicker),.section-heading>p,.section-heading>.text-link,.section-heading>.home-stores-actions,.home-shop-intro,.hero-tasks a,.product-card,.trust-groups>section,.trust-proofs,.service-row>li,.store-panel,.facts-grid li,.faq-layout .accordion,.split-copy>p,.split-copy .steps,.split-copy .actions,.process-item,.service-link,.pillar,.trust-item,.page-intro>p,.home-pieces-more,.cta-band p,.cta-band .actions,.footer-contact-intro p,.footer-contact-ways>*,.plp-hero-line,.statement blockquote,.sp-body,.pieces-all, .split-media,.trust-proof-media,.category-card,.store-visual,.sp-figure) las rellena apply.py desde
    patches.py, que es donde se mantienen junto con las del CSS. */
 const root = document.documentElement;
 const anim = root.classList.contains('ag-anim');
 window.__agMotion = true;
 
-const UP = '.eyebrow:not(.kicker),.section-heading>p,.section-heading>.text-link,.section-heading>.home-stores-actions,.home-shop-intro,.hero-tasks a,.product-card,.how,.trust-facts li,.trust-links,.service-row>li,.store-panel,.facts-grid li,.faq-layout .accordion,.split-copy>p,.split-copy .steps,.split-copy .actions,.process-item,.service-link,.pillar,.trust-item,.calc-card,.calc-aside,.calc-lead,.calc-ref,.price-intro>p,.price-board,.page-intro>p,.home-pieces-more,.cta-band p,.cta-band .actions,.footer-contact-intro p,.footer-contact-ways>*,.plp-hero-line,.statement blockquote,.sp-body,.pieces-all';
+const UP = '.eyebrow:not(.kicker),.section-heading>p,.section-heading>.text-link,.section-heading>.home-stores-actions,.home-shop-intro,.hero-tasks a,.product-card,.trust-groups>section,.trust-proofs,.service-row>li,.store-panel,.facts-grid li,.faq-layout .accordion,.split-copy>p,.split-copy .steps,.split-copy .actions,.process-item,.service-link,.pillar,.trust-item,.page-intro>p,.home-pieces-more,.cta-band p,.cta-band .actions,.footer-contact-intro p,.footer-contact-ways>*,.plp-hero-line,.statement blockquote,.sp-body,.pieces-all';
 const CLIP = '.split-media,.trust-proof-media,.category-card,.store-visual,.sp-figure';
 const NO_SPLIT = '#calculator-widget,.calculator,dialog,.reading,.price-panel,.product-card';
 
@@ -191,5 +191,36 @@ if (wa && cover.length && 'IntersectionObserver' in window) {
       wa.classList.toggle('is-away', inView.size > 0);
     });
     io2.observe(cover[1]);
+  }
+}
+
+/* 8. Ficha de precios junto a la calculadora ---------------------------------
+   Mantiene al día la fila «Precio de compra · oro de 18 k» con la pureza y el
+   tramo que haya elegidos en la calculadora. El dato sale de la propia
+   calculadora (#price-line); si este módulo no carga, queda el valor que trae
+   la página. No depende de que el movimiento esté activo. */
+{
+  const buy = document.querySelector('[data-buy]');
+  const card = document.querySelector('.calc-card');
+  if (buy && card) {
+    const kind = buy.querySelector('[data-buy-kind]');
+    const what = buy.querySelector('[data-buy-what]');
+    const rate = buy.querySelector('[data-buy-rate]');
+    const nb = s => s.replace(/ /g, '\u00a0');
+    const sync = () => {
+      const line = document.getElementById('price-line');
+      if (!line) return;
+      const full = (line.querySelector('.price-line-label')?.textContent || '').trim();
+      const label = full.split('·').pop().trim();
+      const value = (line.querySelector('.tier.active strong')?.textContent || '').trim();
+      // En «Empeñar» la calculadora habla de valor de tasación, no de precio de compra.
+      const k = full.startsWith('Precio') ? 'Precio de compra' : 'Valor por gramo';
+      if (kind && full && kind.textContent !== k) kind.textContent = k;
+      if (label && what.textContent !== nb(label)) what.textContent = nb(label);
+      if (value && rate.textContent !== nb(value)) rate.textContent = nb(value);
+    };
+    sync();
+    new MutationObserver(sync).observe(card, { childList: true, subtree: true, characterData: true });
+    document.addEventListener('quote:update', sync);
   }
 }
