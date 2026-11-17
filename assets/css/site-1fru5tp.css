@@ -697,8 +697,8 @@ h2 em,h3 em,h4 em{font-style:normal}
    página se ve completa y quieta. */
 
 /* H.1 Revelados al entrar en pantalla (los dispara ag-motion.js con .is-in) */
-html.ag-anim :is(main,.site-footer) :is(.eyebrow:not(.kicker),.section-heading>p,.section-heading>.text-link,.section-heading>.home-stores-actions,.home-shop-intro,.hero-tasks a,.product-card,.steps-row li,.trust-facts-title,.trust-facts li,.trust-links,.service-row>li,.store-panel,.facts-grid li,.faq-layout .accordion,.split-copy>p,.split-copy .steps,.split-copy .actions,.process-item,.service-link,.pillar,.trust-item,.calc-card,.calc-aside,.calc-intro .quote-panel,.calc-intro .actions,.page-intro>p,.home-pieces-more,.cta-band p,.cta-band .actions,.footer-contact-intro p,.footer-contact-ways>*,.plp-hero-line,.statement blockquote,.sp-body,.pieces-all):not(.hero *):not(.calculator *):not(.is-in){opacity:0}
-html.ag-anim :is(main,.site-footer) :is(.eyebrow:not(.kicker),.section-heading>p,.section-heading>.text-link,.section-heading>.home-stores-actions,.home-shop-intro,.hero-tasks a,.product-card,.steps-row li,.trust-facts-title,.trust-facts li,.trust-links,.service-row>li,.store-panel,.facts-grid li,.faq-layout .accordion,.split-copy>p,.split-copy .steps,.split-copy .actions,.process-item,.service-link,.pillar,.trust-item,.calc-card,.calc-aside,.calc-intro .quote-panel,.calc-intro .actions,.page-intro>p,.home-pieces-more,.cta-band p,.cta-band .actions,.footer-contact-intro p,.footer-contact-ways>*,.plp-hero-line,.statement blockquote,.sp-body,.pieces-all):not(.hero *):not(.calculator *).is-in{animation:ag-rise .9s var(--e-out) backwards;animation-delay:var(--d,0ms)}
+html.ag-anim :is(main,.site-footer) :is(.eyebrow:not(.kicker),.section-heading>p,.section-heading>.text-link,.section-heading>.home-stores-actions,.home-shop-intro,.hero-tasks a,.product-card,.how,.trust-facts li,.trust-links,.service-row>li,.store-panel,.facts-grid li,.faq-layout .accordion,.split-copy>p,.split-copy .steps,.split-copy .actions,.process-item,.service-link,.pillar,.trust-item,.calc-card,.calc-aside,.calc-lead,.calc-ref,.price-intro>p,.price-board,.page-intro>p,.home-pieces-more,.cta-band p,.cta-band .actions,.footer-contact-intro p,.footer-contact-ways>*,.plp-hero-line,.statement blockquote,.sp-body,.pieces-all):not(.hero *):not(.calculator *):not(.is-in){opacity:0}
+html.ag-anim :is(main,.site-footer) :is(.eyebrow:not(.kicker),.section-heading>p,.section-heading>.text-link,.section-heading>.home-stores-actions,.home-shop-intro,.hero-tasks a,.product-card,.how,.trust-facts li,.trust-links,.service-row>li,.store-panel,.facts-grid li,.faq-layout .accordion,.split-copy>p,.split-copy .steps,.split-copy .actions,.process-item,.service-link,.pillar,.trust-item,.calc-card,.calc-aside,.calc-lead,.calc-ref,.price-intro>p,.price-board,.page-intro>p,.home-pieces-more,.cta-band p,.cta-band .actions,.footer-contact-intro p,.footer-contact-ways>*,.plp-hero-line,.statement blockquote,.sp-body,.pieces-all):not(.hero *):not(.calculator *).is-in{animation:ag-rise .9s var(--e-out) backwards;animation-delay:var(--d,0ms)}
 /* Antes de entrar se ocultan con opacidad y no con recorte: un elemento recortado
    del todo no cuenta como visible para el observador y nunca llegaría a revelarse. */
 html.ag-anim main :is(.split-media,.trust-proof-media,.category-card,.store-visual,.sp-figure):not(.is-in){opacity:0}
@@ -1335,4 +1335,234 @@ body:has(#site-header.is-overlay:not(.is-scrolled)) .hero-tasks{opacity:0;transf
   .hero--home .hero-content>:is(h1,h2){grid-row:2 / span 2;align-self:end}
   .hero--home .hero-content>.hero-text{grid-row:1 / span 2;align-self:end}
   .hero--home .hero-content>.actions{grid-row:3}
+}
+
+
+/* ---------------------------------------------------------------------------
+   ALTER GOLD · v6 — orden y contenido
+   Va después de v5.css y no cambia su carácter. Rehace seis zonas que se veían
+   vacías, cargadas de texto o descompensadas:
+     1. Menú            ocho accesos en una retícula de cuatro por dos.
+     2. Calculadora     la columna izquierda explica y da el precio del día.
+     3. Tabla de precios  un tablero único, a la derecha, bajo la calculadora.
+     4. Confianza       menos texto; pasos en franja, garantías junto a la foto.
+     5. Vender/empeñar  dos fichas idénticas, alineadas fila a fila.
+     6. Cajas de seguridad  ficha de cuatro filas en lugar de párrafos.
+   La «franja» (.strip) es el mismo objeto que la barra de accesos de portada:
+   tarjeta blanca partida en celdas por filetes.
+   --------------------------------------------------------------------------- */
+
+/* 0. Franja ------------------------------------------------------------------ */
+.strip{display:grid;margin:0;padding:0;list-style:none;border:1px solid rgb(var(--sh)/.1);border-radius:var(--r-card);background:var(--card);box-shadow:var(--e1)}
+.strip-k{display:block;margin-bottom:0.375rem;font:600 0.6875rem/1.4 var(--body);letter-spacing:.13em;text-transform:uppercase;color:var(--grey)}
+
+/* 1. Menú -------------------------------------------------------------------- */
+.mm-grid{display:grid;gap:0.125rem;margin:0;padding:0.875rem var(--gutter) 1.5rem;list-style:none}
+.mm .mm-item{grid-template-columns:5.5rem minmax(0,1fr);gap:1rem}
+.mm-frame{display:block;overflow:hidden;aspect-ratio:4 / 3;border-radius:var(--r-ctl);background:var(--stone)}
+.mm .mm-thumb{display:block;width:100%;height:100%;border-radius:0;object-fit:cover}
+@media (min-width:64em){
+  .mm-grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:1.75rem 1.5rem;max-width:calc(var(--max) + 2 * var(--gutter));margin-inline:auto;padding-block:1.75rem 2rem}
+  .mm .mm-item{grid-template-columns:minmax(0,1fr);align-items:start;align-content:start;gap:0.875rem;height:100%;margin:0;padding:0;overflow:visible}
+  .mm .mm-item:hover{background:none}
+  .mm-frame{aspect-ratio:16 / 9;border-radius:var(--r-card);box-shadow:var(--e1);transition:box-shadow .3s var(--e-out)}
+  .mm .mm-title{font-size:1.5rem}
+  .mm .mm-text{margin-top:0.25rem;max-width:19rem}
+}
+@media (min-width:64em) and (max-height:51.25em){
+  .mm-grid{gap:1.375rem 1.5rem;padding-block:1.375rem 1.5rem}
+  .mm-frame{aspect-ratio:21 / 9}
+}
+@media (hover:hover) and (pointer:fine) and (min-width:64em){
+  .mm .mm-item:hover .mm-frame{box-shadow:var(--e2)}
+  .mm .mm-item:hover .mm-thumb{transform:scale(1.04)}
+  .mm .mm-item:hover .mm-title{text-decoration:underline;text-underline-offset:0.3125rem;text-decoration-thickness:1px}
+}
+@media (prefers-reduced-motion:no-preference){
+  .menu-dialog[open] .mm-grid .mm-item{animation-duration:.45s}
+  .menu-dialog[open] .mm-grid li:nth-child(1) .mm-item{animation-delay:.06s}
+  .menu-dialog[open] .mm-grid li:nth-child(2) .mm-item{animation-delay:.09s}
+  .menu-dialog[open] .mm-grid li:nth-child(3) .mm-item{animation-delay:.12s}
+  .menu-dialog[open] .mm-grid li:nth-child(4) .mm-item{animation-delay:.15s}
+  .menu-dialog[open] .mm-grid li:nth-child(5) .mm-item{animation-delay:.18s}
+  .menu-dialog[open] .mm-grid li:nth-child(6) .mm-item{animation-delay:.21s}
+  .menu-dialog[open] .mm-grid li:nth-child(7) .mm-item{animation-delay:.24s}
+  .menu-dialog[open] .mm-grid li:nth-child(8) .mm-item{animation-delay:.27s}
+  .menu-dialog[open] :is(.mm-links li,.mm-contact a){animation-delay:.3s}
+}
+@media (min-width:64em) and (max-width:89.99em){
+  .mm-links{gap:0 1.25rem}
+  .mm-links a{font-size:1rem}
+}
+
+/* 2. Calculadora: la columna izquierda ----------------------------------------- */
+.calc-intro h2{margin:0}
+.calc-intro>p.calc-lead{max-width:26rem;margin:1.125rem 0 0;font-size:1.0625rem;line-height:1.6;color:var(--subdued)}
+.calc-ref{margin-top:1.75rem;overflow:hidden;border:1px solid rgb(var(--sh)/.1);border-radius:var(--r-card);background:var(--card);box-shadow:var(--e1)}
+.calc-ref-head{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:0.125rem 1rem;margin:0;padding:0.75rem 1.25rem 0.6875rem;border-bottom:1px solid var(--hairline);background:linear-gradient(180deg,#FCFCFB 0%,#F5F5F2 100%);font-size:0.8125rem;line-height:1.4;color:var(--grey)}
+.calc-ref-k{font:600 0.6875rem/1.4 var(--body);letter-spacing:.13em;text-transform:uppercase;color:var(--ink)}
+.calc-ref .quote-row{border-bottom:1px solid var(--hairline)}
+.calc-ref .quote-row:last-child{border-bottom:0}
+.calc-ref .quote--panel{grid-template-columns:minmax(0,1fr) auto 4.25rem;gap:0.875rem;padding:0.875rem 1.25rem}
+.calc-ref .quote--panel .quote-label{font:500 1rem/1.3 var(--body);letter-spacing:0;text-transform:none;color:var(--ink)}
+.calc-ref .quote--panel strong{font:600 1.375rem/1 var(--body);letter-spacing:-.025em;font-variant-numeric:lining-nums tabular-nums}
+.calc-ref .quote--panel .delta{font-size:0.8125rem}
+.calc-ref .delta.up{color:#2F6B3A}
+.calc-ref .delta.down{color:#A24A36}
+.calc-ref-more{display:flex;align-items:center;justify-content:space-between;gap:1rem;width:100%;min-height:3rem;padding:0 1.25rem;border:0;background:linear-gradient(180deg,#FFFFFF 0%,#F0EFEB 100%);color:var(--ink);font:600 0.9375rem/1.2 var(--body);text-align:left;cursor:pointer;transition:background-color .2s ease}
+.calc-ref-more svg{flex:none;width:0.875rem;height:0.875rem}
+.calc-ref-more:focus-visible{outline:2px solid var(--ink);outline-offset:-3px}
+@media (hover:hover) and (pointer:fine){
+  .calc-ref-more:hover{background:linear-gradient(180deg,#F6F5F1 0%,#E8E7E2 100%)}
+}
+
+/* Qué compramos: franja bajo la calculadora, no una lista suelta a su lado */
+.calc-aside{display:grid;border:1px solid rgb(var(--sh)/.1);border-radius:var(--r-card);background:var(--card);box-shadow:var(--e1)}
+.calc-aside h3{margin:0;padding:1rem 1.25rem;font:600 1.3125rem/1.2 var(--serif);letter-spacing:-.012em}
+.calc-aside ul{display:grid;border-top:1px solid var(--hairline)}
+.calc-aside li{padding:0.8125rem 1.25rem 0.875rem;border-bottom:0;font-size:0.9375rem;line-height:1.45;color:var(--subdued)}
+.calc-aside li+li{box-shadow:inset 0 1px 0 var(--hairline)}
+@media (min-width:600px){
+  .calc-aside ul{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .calc-aside li:nth-child(2){box-shadow:inset 1px 0 0 var(--hairline)}
+  .calc-aside li:nth-child(4){box-shadow:inset 1px 0 0 var(--hairline),inset 0 1px 0 var(--hairline)}
+}
+@media (min-width:1100px){
+  .calc-band-inner.has-aside{grid-template-areas:'intro card' 'aside aside';grid-template-rows:auto auto;row-gap:clamp(2rem,3vw,2.75rem)}
+  .calc-aside{grid-template-columns:minmax(12.5rem,0.72fr) minmax(0,4fr)}
+  .calc-aside h3{display:flex;align-items:center;padding:1.125rem 1.375rem}
+  .calc-aside ul{grid-template-columns:repeat(4,minmax(0,1fr));border-top:0}
+  .calc-aside li{padding:1.125rem 1.25rem 1.1875rem}
+  .calc-aside li:nth-child(n){box-shadow:inset 1px 0 0 var(--hairline)}
+}
+
+/* 3. Tabla de precios: un tablero ---------------------------------------------- */
+/* Vale para la tabla de la portada y de las páginas de servicio (.price-board) y
+   para las que el sitio pinta en la calculadora y en la página de empeño
+   (#rate-table): texto a la izquierda, tablero a la derecha.
+   :where() mantiene la especificidad baja: con :is() todo pesaría como un id. */
+.price-layout,#rate-table{display:grid;gap:1.75rem}
+.price-layout{padding-top:2.25rem}
+#rate-table{overflow:visible}
+.price-intro .eyebrow{margin-bottom:0.75rem}
+.price-intro h2,#rate-table .section-heading h2{margin:0;font-size:clamp(2rem,2.9vw,2.75rem);line-height:1.05}
+.price-lead,#rate-table .section-heading>p{max-width:24rem;margin-top:1rem;font-size:1.0625rem;line-height:1.6;color:var(--subdued)}
+.price-intro .price-note{max-width:24rem;margin:0.875rem 0 0;font-size:0.9375rem;line-height:1.55;color:var(--grey)}
+#rate-table .section-heading{flex-direction:column;align-items:flex-start;gap:0;margin:0}
+.price-board,#rate-table>.price-tables,#rate-table>table{border:1px solid rgb(var(--sh)/.1);border-radius:var(--r-card-lg);background:var(--card);box-shadow:var(--e2)}
+.price-board,#rate-table>.price-tables{position:relative;overflow:hidden}
+#rate-table>table{border-collapse:separate;border-spacing:0;overflow:hidden}
+:where(.price-board,#rate-table) .price-tables{position:relative;gap:0;align-items:start}
+.price-board .price-tables{overflow:visible}
+:where(.price-board,#rate-table) .reference-table{font-size:1rem}
+:where(.price-board,#rate-table) .price-table caption:not(.visually-hidden){padding:1.125rem 1.375rem 1rem;font:600 1.375rem/1.15 var(--serif);letter-spacing:-.012em}
+:where(.price-board,#rate-table) .reference-table th{padding:0.625rem 0.5rem;border-bottom:1px solid var(--hairline);background:var(--paper);font:600 0.6875rem/1.4 var(--body);letter-spacing:.13em;color:var(--grey)}
+:where(.price-board,#rate-table) .price-table caption:not(.visually-hidden)+thead th{border-top:1px solid var(--hairline)}
+:where(.price-board,#rate-table) .reference-table td{height:3rem;padding-block:0.375rem;border-bottom:1px solid var(--hairline);font-variant-numeric:lining-nums tabular-nums}
+:where(.price-board,#rate-table) .reference-table :is(th,td):first-child{padding-left:1.375rem}
+:where(.price-board,#rate-table) .reference-table :is(th,td):last-child{padding-right:1.375rem}
+:where(.price-board,#rate-table) .reference-table td:first-child{font-weight:600}
+#rate-table>table tbody tr:last-child td{border-bottom:0}
+:where(.price-board,#rate-table) .price-table tr.is-current{background:var(--ink-2);color:var(--on-ink)}
+:where(.price-board,#rate-table) .price-table tr.is-current td{border-bottom-color:var(--ink-2)}
+:where(.price-board,#rate-table) .price-table tr.is-current td:first-child{box-shadow:inset 3px 0 0 var(--gold)}
+:where(.price-board,#rate-table) .price-table tbody tr.is-current:hover{background:var(--ink-3)}
+:where(.price-board,#rate-table) .price-table button:focus-visible{outline:2px solid currentColor;outline-offset:3px}
+.price-status{margin:0;padding:0.6875rem 1.375rem 0.75rem;border-top:1px solid var(--hairline);background:var(--paper);font-size:0.8125rem;line-height:1.4;color:var(--grey);text-align:right}
+@media (max-width:767px){
+  :where(.price-board,#rate-table) .price-table+.price-table caption{border-top:1px solid var(--hairline)}
+  :where(.price-board,#rate-table) .reference-table :is(th,td):first-child{padding-left:1rem}
+  :where(.price-board,#rate-table) .reference-table :is(th,td):last-child{padding-right:1rem}
+  :where(.price-board,#rate-table) .price-table caption:not(.visually-hidden),.price-status{padding-inline:1rem}
+}
+@media (min-width:768px){
+  :where(.price-board,#rate-table) .price-tables::before{content:'';position:absolute;top:0;bottom:0;left:50%;width:1px;background:var(--hairline)}
+  /* El oro tiene una fila más que la plata: la hora de la cotización ocupa ese hueco.
+     Si algún día las dos tablas miden lo mismo, vuelve a ser un pie corrido. */
+  .price-board:has(.price-table:first-child tbody tr:nth-child(6):last-child):has(.price-table:last-child tbody tr:nth-child(5):last-child) .price-status{display:flex;align-items:center;justify-content:flex-end;position:absolute;right:0;bottom:0;width:50%;height:3rem;padding-block:0;border-top:0;background:none}
+  .price-tables:has(.price-table+.price-table) .price-table:first-child tbody tr:last-child td{border-bottom:0}
+}
+@media (min-width:1100px){
+  .price-layout,#rate-table{grid-template-columns:minmax(0,4fr) minmax(0,8fr);gap:clamp(2.5rem,6vw,6rem);align-items:start}
+  .price-layout{padding-top:0.5rem}
+}
+
+/* 4. Confianza ----------------------------------------------------------------- */
+/* Los tres pasos, en franja: sin filetes ni nodos sobre cada uno. */
+.how-title{margin:0;padding:1rem 1.25rem;border-bottom:1px solid var(--hairline);font:600 1.3125rem/1.2 var(--serif);letter-spacing:-.012em}
+.how .steps-row{grid-template-columns:minmax(0,1fr);gap:0}
+.how .steps-row li{padding:1rem 1.25rem 1.125rem;border-top:0}
+.how .steps-row li::before,.how .steps-row li::after{display:none}
+.how .steps-row li+li{box-shadow:inset 0 1px 0 var(--hairline)}
+.how .steps-row h3{margin:0 0 0.25rem;font:600 1.3125rem/1.2 var(--serif);letter-spacing:-.012em}
+.how .steps-row p{max-width:none;font-size:0.9375rem;line-height:1.45;color:var(--subdued)}
+@media (min-width:900px){
+  .how{grid-template-columns:minmax(12.5rem,0.72fr) minmax(0,4fr)}
+  .how-title{display:flex;align-items:center;padding:1.125rem 1.375rem;border-bottom:0}
+  .how .steps-row{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .how .steps-row li{padding:1.125rem 1.375rem 1.25rem}
+  .how .steps-row li:nth-child(n){box-shadow:inset 1px 0 0 var(--hairline)}
+}
+/* Garantías junto a la foto: seis, de una línea */
+.trust-proof{align-items:center;margin-top:clamp(2.5rem,4.2vw,4rem)}
+.trust-proof-copy{padding-block:0}
+.trust-proof-copy>h2{margin:0 0 clamp(1.5rem,2.4vw,2.25rem);font-size:clamp(2rem,2.9vw,2.75rem);line-height:1.05}
+.trust-facts{gap:1.5rem 2.75rem;margin:0 0 clamp(1.5rem,2.4vw,2.25rem)}
+.trust-facts li{padding:0;border-top:0}
+.trust-facts h3{margin:0 0 0.25rem;font:600 1.3125rem/1.2 var(--serif);letter-spacing:-.012em}
+.trust-facts p{font-size:0.9375rem;line-height:1.5}
+@media (max-width:899px){
+  .trust-proof-copy{padding-top:3.25rem}
+}
+
+/* 5. Vender o empeñar: dos fichas iguales ----------------------------------------- */
+.sell-pawn-grid{align-items:stretch;row-gap:0}
+.band-ink .sell-pawn-grid article.sp-card{display:grid;grid-template-rows:auto 1fr}
+.sp-body{display:grid;grid-template-rows:auto auto auto 1fr;align-content:start}
+.sp-body h3{margin:0 0 0.75rem}
+.sell-pawn-grid .sp-body p.sell-pawn-lead:not(.sell-pawn-links){margin:0;max-width:34rem;font-size:1.0625rem;line-height:1.55;color:var(--on-ink-muted)}
+/* Ficha de tres datos: en filas (rótulo y valor) y, si hay ancho, en tres columnas */
+.sp-specs{display:grid;grid-template-columns:minmax(0,1fr);margin:1.5rem 0 0;border-block:1px solid var(--ink-line)}
+.sp-specs>div{display:grid;grid-template-columns:7.5rem minmax(0,1fr);align-items:baseline;gap:1rem;padding:0.6875rem 0 0.75rem}
+.sp-specs>div+div{box-shadow:inset 0 1px 0 var(--ink-line)}
+.sp-specs dt{font:600 0.6875rem/1.4 var(--body);letter-spacing:.13em;text-transform:uppercase;color:var(--on-ink-muted)}
+.sp-specs dd{margin:0;font:500 1.0625rem/1.3 var(--body);color:var(--on-ink)}
+@media (min-width:1400px){
+  .sp-specs{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .sp-specs>div{display:block;padding:0.875rem 1rem 0.9375rem 0}
+  .sp-specs>div+div{padding-left:1rem;box-shadow:inset 1px 0 0 var(--ink-line)}
+  .sp-specs dd{margin-top:0.3125rem}
+}
+.sp-body .sell-pawn-links{align-items:center;align-self:end;gap:0.5rem 1.5rem;margin:1.5rem 0 0}
+.sp-body .sell-pawn-links .button{margin-right:0.25rem}
+@media (min-width:768px){
+  @supports (grid-template-rows:subgrid){
+    /* Cinco filas compartidas: foto, título, frase, ficha y acciones caen a la misma altura. */
+    .sell-pawn-grid{grid-template-rows:repeat(5,auto)}
+    .band-ink .sell-pawn-grid article.sp-card{grid-row:span 5;grid-template-rows:subgrid}
+    .sp-body{grid-row:2 / span 4;grid-template-rows:subgrid}
+  }
+}
+@media (max-width:767px){
+  .sp-card+.sp-card{margin-top:2.5rem}
+}
+@media (max-width:479px){
+  .sp-specs>div{grid-template-columns:6.5rem minmax(0,1fr)}
+}
+
+/* 6. Cajas de seguridad: ficha en lugar de párrafos ------------------------------ */
+.service-row>.service-row-vault{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+.service-row-vault .service-row-body{justify-content:center;gap:0;padding:clamp(1.75rem,3.6vw,3.75rem)}
+.service-row .service-row-vault h3{margin:0;font-size:clamp(2rem,2.9vw,2.75rem);line-height:1.05}
+.service-row .service-row-vault .service-row-body>p:not(.service-row-links){max-width:30rem;margin-top:0.875rem}
+.vault-perks{grid-template-columns:minmax(0,1fr);gap:0;margin:1.5rem 0 0;border-top:1px solid var(--hairline)}
+.vault-perks>div{display:grid;grid-template-columns:7.5rem minmax(0,1fr);align-items:baseline;gap:1rem;padding:0.8125rem 0;border-bottom:1px solid var(--hairline)}
+.vault-perks dt{margin:0;font:600 0.6875rem/1.4 var(--body);letter-spacing:.13em;text-transform:uppercase;color:var(--grey)}
+.vault-perks dd{margin:0;font:500 1.0625rem/1.4 var(--body);color:var(--ink)}
+.service-row-vault .service-row-links{align-items:center;gap:0.5rem 1.5rem;margin-top:1.75rem}
+@media (max-width:767px){
+  .service-row>.service-row-vault{grid-template-columns:minmax(0,1fr)}
+}
+@media (max-width:479px){
+  .vault-perks>div{grid-template-columns:6.5rem minmax(0,1fr)}
 }
