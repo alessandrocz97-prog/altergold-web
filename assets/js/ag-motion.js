@@ -149,7 +149,7 @@ if (output) {
   new MutationObserver(() => {
     const amount = output.querySelector('.result-amount');
     const text = amount ? amount.textContent : '';
-    if (amount && last && text !== last && amount.animate) {
+    if (amount && last && text !== last && amount.animate && !output.dataset.mejCount) {
       amount.animate([{ opacity: 0.35, transform: 'translateY(0.375rem)' }, { opacity: 1, transform: 'none' }], { duration: 320, easing: 'cubic-bezier(.23,1,.32,1)' });
     }
     last = text;
@@ -503,3 +503,87 @@ if (anim && window.CSS?.supports?.('view-transition-name', 'none')) {
   addEventListener('pagehide', () => { seen = read(); });
   addEventListener('pageshow', e => { if (e.persisted) check(); });
 }
+
+/* Artículos: el índice lateral marca el apartado que se está leyendo. */
+{
+  const toc = document.querySelector('.article-toc--side');
+  const heads = toc ? [...document.querySelectorAll('.article-body h2[id]')] : [];
+  if (heads.length && 'IntersectionObserver' in window) {
+    const links = new Map([...toc.querySelectorAll('a')].map(a => [decodeURIComponent(a.hash.slice(1)), a]));
+    let current = null;
+    const mark = () => {
+      const line = innerHeight * 0.3;
+      let id = null;
+      for (const h of heads) { if (h.getBoundingClientRect().top <= line) id = h.id; else break; }
+      if (id === current) return;
+      if (current && links.get(current)) links.get(current).removeAttribute('aria-current');
+      current = id;
+      const a = id && links.get(id);
+      if (a) {
+        a.setAttribute('aria-current', 'true');
+        const box = a.closest('ol');
+        if (box && box.scrollHeight > box.clientHeight) box.scrollTop = a.offsetTop - box.clientHeight / 2 + a.offsetHeight / 2;
+      }
+    };
+    let queued = false;
+    const ask = () => { if (!queued) { queued = true; requestAnimationFrame(() => { queued = false; mark(); }); } };
+    addEventListener('scroll', ask, { passive: true });
+    addEventListener('resize', ask, { passive: true });
+    mark();
+  }
+}
+
+/* Blog: la foto del artículo viaja de su fila (o del destacado) a la cabecera del artículo (wow.css: «ag-post»). */
+if (anim && window.CSS?.supports?.('view-transition-name', 'none')) {
+  document.addEventListener('click', e => {
+    if (e.defaultPrevented || e.button || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+    for (const el of document.querySelectorAll('.ag-post')) el.classList.remove('ag-post');
+    const a = e.target.closest?.('a[href*="articulos/"]');
+    if (!a || a.target === '_blank') return;
+    const pic = a.querySelector('.post-thumb') || a.closest('.post-feature')?.querySelector('.post-feature-media');
+    if (!pic) return;
+    const r = pic.getBoundingClientRect();
+    if (r.width > 0 && r.bottom > 0 && r.top < innerHeight) pic.classList.add('ag-post');
+  });
+}
+
+
+/* ================= ALTER GOLD · versión «mejoras» (22 nov) ================= */
+(() => {
+  const rm = matchMedia('(prefers-reduced-motion: reduce)');
+
+  /* Calculadora: la cifra nueva cuenta desde la anterior en vez de aparecer de golpe.
+     El texto final es siempre el que escribe la calculadora; aquí solo se pintan los pasos intermedios. */
+  const output = document.getElementById('calculation-output');
+  if (output) {
+    const parse = s => {
+      const m = /^\s*(\d{1,3}(?:\.\d{3})*|\d+)(?:,(\d+))?\s*€\s*$/.exec(s || '');
+      return m ? { n: parseFloat(m[1].replace(/\./g, '') + '.' + (m[2] || '0')), dec: (m[2] || '').length, group: m[1].includes('.') } : null;
+    };
+    let prev = null, raf = 0, mine = false;
+    const first = output.querySelector('.result-amount');
+    if (first) prev = parse(first.textContent);
+    new MutationObserver(() => {
+      if (mine) return;
+      const el = output.querySelector('.result-amount');
+      const final = el ? el.textContent : '';
+      const to = parse(final), from = prev;
+      prev = to;
+      cancelAnimationFrame(raf);
+      if (!el || !to || !from || rm.matches || from.n === to.n || document.hidden) { delete output.dataset.mejCount; return; }
+      const fmt = new Intl.NumberFormat('es-ES', { minimumFractionDigits: to.dec, maximumFractionDigits: to.dec, useGrouping: to.group || from.group ? 'always' : false });
+      const t0 = performance.now(), D = 420;
+      output.dataset.mejCount = '1';
+      const paint = s => { mine = true; el.textContent = s; };
+      const step = now => {
+        const k = Math.min(1, Math.max(0, (now - t0) / D)), e = 1 - Math.pow(1 - k, 3);   // la marca de tiempo del fotograma puede ser anterior a t0
+        if (!el.isConnected) { delete output.dataset.mejCount; return; }
+        if (k < 1) { paint(fmt.format(from.n + (to.n - from.n) * e) + ' €'); raf = requestAnimationFrame(step); }
+        else { paint(final); setTimeout(() => { delete output.dataset.mejCount; }, 0); }
+        // las mutaciones propias se entregan en microtarea: se dejan pasar y se vuelve a escuchar
+        Promise.resolve().then(() => { mine = false; });
+      };
+      raf = requestAnimationFrame(step);
+    }).observe(output, { childList: true, subtree: true, characterData: true });
+  }
+})();

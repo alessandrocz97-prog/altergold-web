@@ -7,7 +7,7 @@ import{a as p}from"./chunk-ZJLP7MEF.js";import"./chunk-KO5QR3BP.js";import{a as 
     "/vender-oro": "banner-vender-oro",
     "/vender-plata": "banner-plata",
     "/empenos": "banner-empeno",
-    "/recogida-domicilio": "recogida-domicilio",
+    "/recogida-domicilio": "servicio-recogida-casa",
     "/tienda": "banner-joyas-ocasion",
     "/inversion": "banner-inversion",
     "/cajas-seguridad": "banner-cajas-seguridad",
