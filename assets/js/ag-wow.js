@@ -37,7 +37,7 @@ function heroFilm() {
   const img = media && media.querySelector('img');
   if (!img) return;
   const tall = matchMedia('(max-width: 1023px) and (orientation: portrait)').matches;
-  // Foto fija del final (el lingote terminado): lo que se ve sin película y lo que queda cuando la película acaba.
+  // Foto fija del final (el anillo entero): lo que se ve sin película y lo que queda cuando la película acaba.
   const still = () => {
     const s = (tall && img.dataset.finalP) || img.dataset.final;
     if (!s || img.dataset.still) return Promise.resolve();
@@ -50,7 +50,7 @@ function heroFilm() {
   if (rm.matches || lite || !('IntersectionObserver' in window)) { still(); return; }
   let off = false;
   try { off = localStorage.getItem('ag-film') === 'off'; } catch { /* sin almacenamiento */ }
-  if (off) still();   // quien la dejó pausada ve el lingote terminado y el botón de reproducir
+  if (off) still();   // quien la dejó pausada ve el anillo entero y el botón de reproducir
 
   // En un móvil en vertical va un recorte vertical que sigue a la balanza; en el resto, el plano entero.
   const v = d.createElement('video');
@@ -62,13 +62,13 @@ function heroFilm() {
   place();
   addEventListener('resize', place, { passive: true });
   // La película se enseña cuando su primer fotograma ya está pintado, y de golpe (mej.css): ese fotograma es la foto de entrada,
-  // así que el movimiento continúa la foto sin fundido ni imagen doble. Solo si debajo está el lingote terminado
+  // así que el movimiento continúa la foto sin fundido ni imagen doble. Solo si debajo está el anillo entero
   // (volver a verla, o arrancar una película que estaba pausada) entra con un fundido corto.
   const show = () => { v.classList.toggle('is-fade', !!img.dataset.still); v.classList.add('is-on'); };
   const arm = () => { if (v.requestVideoFrameCallback) v.requestVideoFrameCallback(show); else v.addEventListener('playing', show, { once: true }); };
   arm();
   let done = false, dwellMs = 0;
-  const HOLD = 2600;   // lo que el lingote terminado se queda a la vista antes de que el carrusel del móvil siga
+  const HOLD = 2600;   // lo que el anillo entero se queda a la vista antes de que el carrusel del móvil siga
   // En el móvil las diapositivas pasan solas: la primera espera a que la película termine (window.__agFilmMs lo lee el carrusel).
   const dwell = ms => {
     if (ms === dwellMs) return;
@@ -110,8 +110,8 @@ function heroFilm() {
     if (!started) {
       started = true;
       // AV1: misma imagen (o mejor) con un 40 % menos de peso. Solo donde el equipo lo descodifica con soltura y por hardware; si no, H.264.
-      const base = tall ? 'colada-p' : 'colada-l';
-      const av1 = () => { try { return navigator.mediaCapabilities.decodingInfo({ type: 'file', video: { contentType: 'video/mp4; codecs=\"av01.0.08M.08\"', width: tall ? 960 : 1600, height: tall ? 2160 : 900, bitrate: tall ? 4e5 : 9e5, framerate: 30 } }).then(r => !!(r.supported && r.smooth && r.powerEfficient), () => false); } catch { return Promise.resolve(false); } };
+      const base = tall ? 'brillante-p' : 'brillante-l';
+      const av1 = () => { try { return navigator.mediaCapabilities.decodingInfo({ type: 'file', video: { contentType: 'video/mp4; codecs=\"av01.0.08M.08\"', width: tall ? 960 : 1600, height: tall ? 2160 : 900, bitrate: tall ? 25e5 : 22e5, framerate: 24 } }).then(r => !!(r.supported && r.smooth && r.powerEfficient), () => false); } catch { return Promise.resolve(false); } };
       pending = av1().then(ok => {
         pending = null;
         v.src = asset(base + (ok ? '.av1.mp4' : '.mp4'));
@@ -122,11 +122,11 @@ function heroFilm() {
     }
     if (pending) return;
     const p = v.play();
-    // si el navegador no deja arrancar sola la película (ahorro de batería), queda el lingote terminado y el botón de reproducir
+    // si el navegador no deja arrancar sola la película (ahorro de batería), queda el anillo entero y el botón de reproducir
     if (p) p.catch(e => { if (e && e.name === 'NotAllowedError' && !v.classList.contains('is-on')) { off = true; paint(); still(); dwell(0); } });
   };
   btn.addEventListener('click', () => {
-    if (done) {   // verla otra vez, desde la colada
+    if (done) {   // verla otra vez, desde el interior del diamante
       done = false; off = false;
       if (!v.isConnected) media.append(v);
       try { v.currentTime = 0; } catch { /* aún sin datos */ }
