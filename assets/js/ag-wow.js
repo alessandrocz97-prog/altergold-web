@@ -111,7 +111,7 @@ function heroFilm() {
       started = true;
       // AV1: misma imagen (o mejor) con un 40 % menos de peso. Solo donde el equipo lo descodifica con soltura y por hardware; si no, H.264.
       const base = tall ? 'colada-p' : 'colada-l';
-      const av1 = () => { try { return navigator.mediaCapabilities.decodingInfo({ type: 'file', video: { contentType: 'video/mp4; codecs=\"av01.0.08M.08\"', width: tall ? 720 : 1600, height: tall ? 1558 : 900, bitrate: tall ? 4e5 : 9e5, framerate: 30 } }).then(r => !!(r.supported && r.smooth && r.powerEfficient), () => false); } catch { return Promise.resolve(false); } };
+      const av1 = () => { try { return navigator.mediaCapabilities.decodingInfo({ type: 'file', video: { contentType: 'video/mp4; codecs=\"av01.0.08M.08\"', width: tall ? 960 : 1600, height: tall ? 1080 : 900, bitrate: tall ? 4e5 : 9e5, framerate: 30 } }).then(r => !!(r.supported && r.smooth && r.powerEfficient), () => false); } catch { return Promise.resolve(false); } };
       pending = av1().then(ok => {
         pending = null;
         v.src = asset(base + (ok ? '.av1.mp4' : '.mp4'));
